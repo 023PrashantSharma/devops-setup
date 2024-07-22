@@ -29,5 +29,5 @@ If you want to clone the entire repository and use the scripts:
 2. **Setup nextjs project**
 
    ```sh
-   curl -O https://github.com/023PrashantSharma/devops-setup/blob/main/setup-nextjs.sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-nextjs.sh
    bash setup-nextjs.sh
