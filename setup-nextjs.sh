@@ -2,7 +2,7 @@
 
 # Function to display usage
 usage() {
-  echo "Usage: $0 --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME>"
+  echo "Usage: $0 --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT>"
   exit 1
 }
 
@@ -18,7 +18,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # Check if all required parameters are provided
-if [ -z "$DOMAIN" ] || [ -z "$CONTAINER_NAME" ] || [ -z "$IMAGE_NAME" ]; then
+if [ -z "$DOMAIN" ] || [ -z "$CONTAINER_NAME" ] || [ -z "$IMAGE_NAME" ] || [ -z "$PORT" ]; then
   echo "Error: Missing required parameters."
   usage
 fi
@@ -66,14 +66,19 @@ if ! [ -x "$(command -v certbot)" ]; then
 else
   echo 'Certbot is already installed.'
 fi
+# Apply permission
+sudo usermod -aG docker $USER
 
-# Run the Docker container
-docker run -d -p 3000:3000 --name $CONTAINER_NAME $IMAGE_NAME:latest
+# Reload permission
+newgrp docker
+
+# Test Run the Docker container
+docker run hello-world
 
 # Check if the container started successfully
 if [ $? -eq 0 ]; then
   echo "Docker container started successfully."
-  echo "Your Next.js app is running on http://localhost:3000"
+  echo "Your docker permission set successfully"
 else
   echo "Error: Failed to start the Docker container." >&2
   exit 1
@@ -86,7 +91,7 @@ server {
     server_name $DOMAIN;
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://localhost:$PORT;
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection 'upgrade';
