@@ -18,7 +18,7 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # Check if all required parameters are provided
-if [ -z "$DOMAIN" ] || [ -z "$CONTAINER_NAME" ] || [ -z "$IMAGE_NAME" ] || [ -z "$PORT" ]; then
+if [ -z "$DOMAIN" ] || [ -z "$CONTAINER_NAME" ] || [ -z "$IMAGE_NAME" ] || [ -z "$PORT" ] || [ -z "$EMAIL" ]; then
   echo "Error: Missing required parameters."
   usage
 fi
@@ -109,7 +109,12 @@ sudo systemctl restart nginx
 echo "Nginx configuration for $DOMAIN created and enabled."
 
 # Obtain SSL certificate using Certbot
-sudo certbot --nginx -d $DOMAIN
+if sudo certbot --nginx -d $DOMAIN --email $EMAIL --agree-tos --no-eff-email --redirect; then
+  echo "SSL certificate obtained and Nginx configured."
+else
+  echo "Error: Failed to obtain SSL certificate." >&2
+  exit 1
+fi
 
 echo "SSL certificate obtained and Nginx configured."
 
