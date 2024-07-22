@@ -74,15 +74,11 @@ sudo usermod -aG docker $USER
 # Reload permission
 newgrp docker
 
-# Test Run the Docker container
-docker run hello-world
-
-# Check if the container started successfully
-if [ $? -eq 0 ]; then
-  echo "Docker container started successfully."
-  echo "Your docker permission set successfully"
+# Test Docker permissions
+if sudo docker run hello-world; then
+  echo "Docker permission set successfully."
 else
-  echo "Error: Failed to start the Docker container." >&2
+  echo "Error: Docker permission setup failed." >&2
   exit 1
 fi
 
