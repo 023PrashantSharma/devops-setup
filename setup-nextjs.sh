@@ -12,6 +12,8 @@ while [[ "$#" -gt 0 ]]; do
     --domain) DOMAIN="$2"; shift ;;
     --container-name) CONTAINER_NAME="$2"; shift ;;
     --image-name) IMAGE_NAME="$2"; shift ;;
+    --port) PORT="$2"; shift ;;
+    --email) EMAIL="$2"; shift ;;
     *) echo "Unknown parameter passed: $1"; usage ;;
   esac
   shift
