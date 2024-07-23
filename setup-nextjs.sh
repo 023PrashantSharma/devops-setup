@@ -75,6 +75,7 @@ fi
 # Apply Docker group permissions
 if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
   sudo usermod -aG docker $USER
+  newgrp docker #if you do not want to reload terminal
   echo "Docker group permission applied. Please re-login for the changes to take effect."
 else
   echo "User already has Docker group permissions."
