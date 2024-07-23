@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit immediately if a command exits with a non-zero status
+set -e
+
 # Function to display usage
 usage() {
   echo "Usage: $0 --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --email <EMAIL>"
@@ -25,7 +28,7 @@ if [ -z "$DOMAIN" ] || [ -z "$CONTAINER_NAME" ] || [ -z "$IMAGE_NAME" ] || [ -z 
   usage
 fi
 
-# Update package lists
+echo "Updating package lists..."
 sudo apt-get update
 
 # Install Docker
@@ -68,21 +71,25 @@ if ! [ -x "$(command -v certbot)" ]; then
 else
   echo 'Certbot is already installed.'
 fi
-# Apply permission
-sudo usermod -aG docker $USER
 
-# Reload permission
-newgrp docker
+# Apply Docker group permissions
+if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
+  sudo usermod -aG docker $USER
+  echo "Docker group permission applied. Please re-login for the changes to take effect."
+else
+  echo "User already has Docker group permissions."
+fi
 
 # Test Docker permissions
-if sudo docker run hello-world; then
+if docker run hello-world &>/dev/null; then
   echo "Docker permission set successfully."
 else
-  echo "Error: Docker permission setup failed." >&2
+  echo "Error: Docker permission setup failed. Please re-login and run the script again." >&2
   exit 1
 fi
 
 # Configure Nginx
+echo "Configuring Nginx..."
 sudo tee /etc/nginx/sites-available/$DOMAIN > /dev/null <<EOF
 server {
     listen 80;
@@ -104,9 +111,15 @@ sudo ln -s /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 
-echo "Nginx configuration for $DOMAIN created and enabled."
+if [ $? -eq 0 ]; then
+  echo "Nginx configuration for $DOMAIN created and enabled."
+else
+  echo "Error: Nginx configuration failed." >&2
+  exit 1
+fi
 
 # Obtain SSL certificate using Certbot
+echo "Obtaining SSL certificate..."
 if sudo certbot --nginx -d $DOMAIN --email $EMAIL --agree-tos --no-eff-email --redirect; then
   echo "SSL certificate obtained and Nginx configured."
 else
@@ -114,7 +127,4 @@ else
   exit 1
 fi
 
-echo "SSL certificate obtained and Nginx configured."
-
-# Final message
 echo "Setup complete. Your Next.js app is running and accessible at https://$DOMAIN"
