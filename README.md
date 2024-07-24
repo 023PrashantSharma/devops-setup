@@ -38,4 +38,4 @@ If you want to clone the entire repository and use the scripts:
    ```sh
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-node-pg.sh
    chmod +x setup-node-pg.sh
-   ./setup-nextjs.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
+   ./setup-node-pg.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
