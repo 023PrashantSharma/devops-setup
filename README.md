@@ -28,14 +28,29 @@ If you want to clone the entire repository and use the scripts:
 
 2. **Setup nextjs project**
 
+   - clone and run script
    ```sh
-   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-nextjs.sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-nextjs.sh
    chmod +x setup-nextjs.sh
    ./setup-nextjs.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --email <EMAIL>
+   ```
+   - clone Dockerfile and cicd.yml file for setup github workflows
+    ```sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/tree/main/github-workflow/nextjs/Dockerfile
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/tree/main/github-workflow/nextjs/cicd.yml
+   ```
    
 3. **Setup node-postgres project**
 
+   - clone and run script
    ```sh
-   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-node-pg.sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-node-pg.sh
    chmod +x setup-node-pg.sh
    ./setup-node-pg.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
+   ```
+   - clone Dockerfile and cicd.yml file for setup github workflows
+    ```sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/tree/main/github-workflow/node-postgres/Dockerfile
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/tree/main/github-workflow/node-postgres/cicd.yml
+   ```
+
