@@ -1,0 +1,87 @@
+name: Deploy Backend Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Build docker image
+        run: |
+          docker build --no-cache \
+            --build-arg PORT=${{ vars.PORT }} \
+            --build-arg DATABASE_NAME=${{ vars.DATABASE_NAME }} \
+            --build-arg ALLOW_ORIGIN=${{ vars.ALLOW_ORIGIN }} \
+            --build-arg DATABASE_USERNAME=${{ vars.DATABASE_USERNAME }} \
+            --build-arg DATABASE_PASSWORD=${{ vars.DATABASE_PASSWORD }} \
+            --build-arg HOST=${{ vars.HOST }} \
+            --build-arg DB_PORT=${{ vars.DB_PORT }} \
+            -t hub.custom.website/backend .
+
+      - name: Login to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: hub.custom.website
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Publish image to Docker Registry
+        run: docker push hub.custom.website/backend:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Login to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: hub.custom.website
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Pull image from Docker Registry
+        run: docker pull hub.custom.website/backend:latest
+
+      - name: Delete old backend container
+        run: docker rm -f backend-container || true
+
+      - name: Delete old postgres container
+        run: docker rm -f postgres-container || true
+
+      - name: Delete old pgadmin container
+        run: docker rm -f pgadmin-container || true
+
+      - name: Run postgres container
+        run: |
+          docker run -d --name postgres-container \
+          -e POSTGRES_DB=${{ vars.DATABASE_NAME }} \
+          -e POSTGRES_USER=${{ vars.DATABASE_USERNAME }} \
+          -e POSTGRES_PASSWORD=${{ vars.DATABASE_PASSWORD }} \
+          -v pgdata:/var/lib/postgresql/data \
+          postgres:latest
+
+      - name: Run pgadmin container
+        run: |
+          docker run -d --name pgadmin-container \
+          -e PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_EMAIL }} \
+          -e PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_PASSWORD }} \
+          -p 8080:80 \
+          dpage/pgadmin4
+
+      - name: Run backend container
+        run: |
+          docker run -d -p ${{ vars.PORT }}:${{ vars.PORT }} --name backend-container \
+          --link postgres-container:postgres \
+          -e DATABASE_NAME=${{ vars.DATABASE_NAME }} \
+          -e ALLOW_ORIGIN=${{ vars.ALLOW_ORIGIN }} \
+          -e DATABASE_USERNAME=${{ vars.DATABASE_USERNAME }} \
+          -e DATABASE_PASSWORD=${{ vars.DATABASE_PASSWORD }} \
+          -e HOST=postgres \
+          -e DB_PORT=${{ vars.DB_PORT }} \
+          hub.custom.website/backend:latest
