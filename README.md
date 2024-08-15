@@ -1,3 +1,4 @@
+
 # DevOps Essential Setup
 
 [![License](https://img.shields.io/github/license/023PrashantSharma/devops-setup)](LICENSE)
@@ -25,32 +26,41 @@ If you want to clone the entire repository and use the scripts:
    ```sh
    git clone https://github.com/023PrashantSharma/devops-setup.git
    cd devops-setup
+   ```
 
 2. **Setup nextjs project**
 
-   - clone and run script
+   - Clone and run the setup script:
    ```sh
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-nextjs.sh
    chmod +x setup-nextjs.sh
    ./setup-nextjs.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --email <EMAIL>
    ```
-   - clone Dockerfile and cicd.yml file for setup github workflows
-    ```sh
+   - Clone the Dockerfile and \`cicd.yml\` file for setting up GitHub workflows:
+   ```sh
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/tree/main/github-workflow/nextjs/Dockerfile
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/tree/main/github-workflow/nextjs/cicd.yml
    ```
-   
+
 3. **Setup node-postgres project**
 
-   - clone and run script
+   - Run the initial setup script:
    ```sh
-   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-node-pg.sh
-   chmod +x setup-node-pg.sh
-   ./setup-node-pg.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-node-pg-part1.sh
+   chmod +x setup-node-pg-part1.sh
+   ./setup-node-pg-part1.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
    ```
-   - clone Dockerfile and cicd.yml file for setup github workflows
-    ```sh
-   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/tree/main/github-workflow/node-postgres/Dockerfile
-   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/tree/main/github-workflow/node-postgres/cicd.yml
+   - **Important:** After running the above script, log out and log back in to apply Docker group changes.
+   
+   - Run the follow-up script after logging back in:
+   ```sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-node-pg-part2.sh
+   chmod +x setup-node-pg-part2.sh
+   ./setup-node-pg-part2.sh
    ```
 
+   - Clone the Dockerfile and \`cicd.yml\` file for setting up GitHub workflows:
+   ```sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/github-workflow/node-postgres/Dockerfile
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/github-workflow/node-postgres/cicd.yml
+   ```
