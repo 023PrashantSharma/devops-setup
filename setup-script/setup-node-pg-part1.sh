@@ -66,4 +66,4 @@ if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
 fi
 
 # Run Part 2 of the script if Docker group permission was already set
-bash setup-node-pg-part2.sh
+bash setup-node-pg-part2.sh --domain $DOMAIN --container-name $CONTAINER_NAME --image-name $IMAGE_NAME --port $PORT --db-port $DB_PORT --email $EMAIL
