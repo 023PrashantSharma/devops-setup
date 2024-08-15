@@ -55,7 +55,7 @@ If you want to clone the entire repository and use the scripts:
    
    - Run the follow-up script after logging back in:
    ```sh
-   ./setup-node-pg-part2.sh
+   ./setup-node-pg-part12.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
    ```
 
    - Clone the Dockerfile and \`cicd.yml\` file for setting up GitHub workflows:
