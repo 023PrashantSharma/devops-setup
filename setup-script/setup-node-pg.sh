@@ -64,7 +64,7 @@ fi
 # Install Nginx
 if ! [ -x "$(command -v nginx)" ]; then
   echo 'Installing Nginx...'
-  sudo apt-get install -y nginx --fix-missing
+  sudo apt-get install -y nginx
   sudo systemctl start nginx
   sudo systemctl enable nginx
   echo 'Nginx installed successfully.'
@@ -91,6 +91,14 @@ if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
 else
   echo "User already has Docker group permissions."
 fi
+
+# Debugging: Print out parameters after re-login
+echo "DEBUG: DOMAIN=$DOMAIN"
+echo "DEBUG: CONTAINER_NAME=$CONTAINER_NAME"
+echo "DEBUG: IMAGE_NAME=$IMAGE_NAME"
+echo "DEBUG: PORT=$PORT"
+echo "DEBUG: DB_PORT=$DB_PORT"
+echo "DEBUG: EMAIL=$EMAIL"
 
 # Test Docker permissions
 if docker run hello-world &>/dev/null; then
