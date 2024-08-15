@@ -76,8 +76,7 @@ fi
 # Apply Docker group permissions
 if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
   sudo usermod -aG docker $USER
-  newgrp docker #if you do not want to reload terminal
-  echo "Docker group permission applied. Please re-login for the changes to take effect."
+  echo "Docker group permission applied. Please log out and log back in for the changes to take effect."
 else
   echo "User already has Docker group permissions."
 fi
@@ -86,7 +85,7 @@ fi
 if docker run hello-world &>/dev/null; then
   echo "Docker permission set successfully."
 else
-  echo "Error: Docker permission setup failed. Please re-login and run the script again." >&2
+  echo "Error: Docker permission setup failed. Please log out and log back in, then run the script again." >&2
   exit 1
 fi
 
