@@ -77,7 +77,7 @@ fi
 if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
   sudo usermod -aG docker $USER
   echo "Docker group permission applied. Restarting shell to apply changes..."
-  exec sg docker "$0 $*"
+  exec sg docker "$(which bash) $0 $*"
   exit 0
 fi
 
