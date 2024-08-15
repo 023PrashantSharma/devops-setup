@@ -73,12 +73,12 @@ else
   echo 'Certbot is already installed.'
 fi
 
-# Apply Docker group permissions
+# Apply Docker group permissions and restart script with new permissions
 if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
   sudo usermod -aG docker $USER
-  echo "Docker group permission applied. Please log out and log back in for the changes to take effect."
-else
-  echo "User already has Docker group permissions."
+  echo "Docker group permission applied. Restarting shell to apply changes..."
+  exec sg docker "$0 $*"
+  exit 0
 fi
 
 # Test Docker permissions
