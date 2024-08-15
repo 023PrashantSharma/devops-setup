@@ -47,15 +47,14 @@ If you want to clone the entire repository and use the scripts:
    - Run the initial setup script:
    ```sh
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-node-pg-part1.sh
-   chmod +x setup-node-pg-part1.sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-node-pg-part2.sh
+   chmod +x setup-node-pg-part1.sh setup-node-pg-part2.sh 
    ./setup-node-pg-part1.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
    ```
-   - **Important:** After running the above script, log out and log back in to apply Docker group changes.
+   - **Important:** If script stop before sucess message between running the above script, log out and log back in to apply Docker group changes.
    
    - Run the follow-up script after logging back in:
    ```sh
-   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-node-pg-part2.sh
-   chmod +x setup-node-pg-part2.sh
    ./setup-node-pg-part2.sh
    ```
 
