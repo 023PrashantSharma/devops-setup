@@ -9,6 +9,29 @@ usage() {
   exit 1
 }
 
+# Temp file to store parameters
+TEMP_FILE="/tmp/setup-node-pg-params.sh"
+
+# Function to save parameters to a temp file
+save_params() {
+  echo "DOMAIN='$DOMAIN'" > $TEMP_FILE
+  echo "CONTAINER_NAME='$CONTAINER_NAME'" >> $TEMP_FILE
+  echo "IMAGE_NAME='$IMAGE_NAME'" >> $TEMP_FILE
+  echo "PORT='$PORT'" >> $TEMP_FILE
+  echo "DB_PORT='$DB_PORT'" >> $TEMP_FILE
+  echo "EMAIL='$EMAIL'" >> $TEMP_FILE
+}
+
+# Function to load parameters from a temp file
+load_params() {
+  if [ -f $TEMP_FILE ]; then
+    source $TEMP_FILE
+  else
+    echo "Error: Temp file with parameters not found." >&2
+    exit 1
+  fi
+}
+
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
   case $1 in
@@ -36,6 +59,9 @@ if [ -z "$DOMAIN" ] || [ -z "$CONTAINER_NAME" ] || [ -z "$IMAGE_NAME" ] || [ -z 
   echo "Error: Missing required parameters."
   usage
 fi
+
+# Save parameters to temp file
+save_params
 
 echo "Updating package lists..."
 sudo apt-get update
@@ -91,6 +117,9 @@ if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
 else
   echo "User already has Docker group permissions."
 fi
+
+# Load parameters from temp file
+load_params
 
 # Debugging: Print out parameters after re-login
 echo "DEBUG: DOMAIN=$DOMAIN"
@@ -153,5 +182,8 @@ else
   echo "Error: Failed to obtain SSL certificate." >&2
   exit 1
 fi
+
+# Remove the temp file
+rm -f $TEMP_FILE
 
 echo "Setup complete. Your Node.js app is running and accessible at https://$DOMAIN"
