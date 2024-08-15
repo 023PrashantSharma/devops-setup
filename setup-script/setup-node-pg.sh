@@ -3,14 +3,14 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+# Temp file to store parameters
+TEMP_FILE="/tmp/setup-node-pg-params.sh"
+
 # Function to display usage
 usage() {
   echo "Usage: $0 --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>"
   exit 1
 }
-
-# Temp file to store parameters
-TEMP_FILE="/tmp/setup-node-pg-params.sh"
 
 # Function to save parameters to a temp file
 save_params() {
@@ -112,10 +112,9 @@ if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
   sudo usermod -aG docker $USER
   echo "Docker group permission applied."
 
-  # Restart the script with the updated group membership
-  exec sg docker "$0 $*"
-else
-  echo "User already has Docker group permissions."
+  # Pause and inform user to re-login
+  echo "Please log out and log back in to apply Docker group changes."
+  exit 0
 fi
 
 # Load parameters from temp file
