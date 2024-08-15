@@ -16,8 +16,8 @@ while [[ "$#" -gt 0 ]]; do
     --container-name) CONTAINER_NAME="$2"; shift ;;
     --image-name) IMAGE_NAME="$2"; shift ;;
     --port) PORT="$2"; shift ;;
-    --email) EMAIL="$2"; shift ;;
     --db-port) DB_PORT="$2"; shift ;;
+    --email) EMAIL="$2"; shift ;;
     *) echo "Unknown parameter passed: $1"; usage ;;
   esac
   shift
@@ -46,7 +46,7 @@ fi
 # Install Docker Compose
 if ! [ -x "$(command -v docker-compose)" ]; then
   echo 'Installing Docker Compose...'
-  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  sudo curl -L "https://github.com/docker/compose/releases/download/2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
   echo 'Docker Compose installed successfully.'
 else
@@ -56,7 +56,7 @@ fi
 # Install Nginx
 if ! [ -x "$(command -v nginx)" ]; then
   echo 'Installing Nginx...'
-  sudo apt-get install -y nginx
+  sudo apt-get install -y nginx --fix-missing
   sudo systemctl start nginx
   sudo systemctl enable nginx
   echo 'Nginx installed successfully.'
