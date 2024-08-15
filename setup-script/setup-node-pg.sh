@@ -23,6 +23,14 @@ while [[ "$#" -gt 0 ]]; do
   shift
 done
 
+# Debugging: Print out parameters
+echo "DEBUG: DOMAIN=$DOMAIN"
+echo "DEBUG: CONTAINER_NAME=$CONTAINER_NAME"
+echo "DEBUG: IMAGE_NAME=$IMAGE_NAME"
+echo "DEBUG: PORT=$PORT"
+echo "DEBUG: DB_PORT=$DB_PORT"
+echo "DEBUG: EMAIL=$EMAIL"
+
 # Check if all required parameters are provided
 if [ -z "$DOMAIN" ] || [ -z "$CONTAINER_NAME" ] || [ -z "$IMAGE_NAME" ] || [ -z "$PORT" ] || [ -z "$EMAIL" ] || [ -z "$DB_PORT" ]; then
   echo "Error: Missing required parameters."
