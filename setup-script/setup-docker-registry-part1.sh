@@ -59,11 +59,29 @@ fi
 if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
   sudo usermod -aG docker $USER
   newgrp docker
-  echo "Docker group permission applied. Please re-login for the changes to take effect."
+  echo "Docker group permission applied. Please log out and log back in to apply the changes."
+  echo "After re-login, run the following command to continue the setup:"
+  echo "./setup-docker-registry-part2.sh --domain $DOMAIN --port $PORT --email $EMAIL --username $USERNAME --password $PASSWORD"
   exit 0
 else
   echo "User already has Docker group permissions."
 fi
 
-# Run Part 2 of the script if Docker group permission was already set
+# Save parameters for the second part of the script
+echo "Saving parameters for part 2..."
+cat <<EOF >/tmp/setup-docker-registry-params.sh
+DOMAIN="$DOMAIN"
+PORT="$PORT"
+EMAIL="$EMAIL"
+USERNAME="$USERNAME"
+PASSWORD="$PASSWORD"
+EOF
+
+# Next steps instructions
+echo "Please log out and log back in to apply Docker group changes."
+echo "After re-login, run the following command to continue the setup:"
+echo "./setup-docker-registry-part2.sh --domain $DOMAIN --port $PORT --email $EMAIL --username $USERNAME --password $PASSWORD"
+
+exit 0
+
 bash setup-docker-registry-part2.sh --domain $DOMAIN --port $PORT --username $USERNAME --password $PASSWORD --email $EMAIL

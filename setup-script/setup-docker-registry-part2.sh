@@ -3,30 +3,8 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Function to display usage
-usage() {
-  echo "Usage: $0 --domain <DOMAIN> --port <PORT> --email <EMAIL> --username <USERNAME> --password <PASSWORD>"
-  exit 1
-}
-
-# Parse command-line arguments
-while [[ "$#" -gt 0 ]]; do
-  case $1 in
-    --domain) DOMAIN="$2"; shift ;;
-    --port) PORT="$2"; shift ;;
-    --email) EMAIL="$2"; shift ;;
-    --username) USERNAME="$2"; shift ;;
-    --password) PASSWORD="$2"; shift ;;
-    *) echo "Unknown parameter passed: $1"; usage ;;
-  esac
-  shift
-done
-
-# Check if all required parameters are provided
-if [ -z "$DOMAIN" ] || [ -z "$PORT" ] || [ -z "$EMAIL" ] || [ -z "$USERNAME" ] || [ -z "$PASSWORD" ]; then
-  echo "Error: Missing required parameters."
-  usage
-fi
+# Load parameters from part 1
+source /tmp/setup-docker-registry-params.sh
 
 # Set up Docker registry
 echo "Setting up Docker registry..."
@@ -93,9 +71,12 @@ else
   exit 1
 fi
 
+# Navigate to the Docker registry directory
+cd ~/docker-registry
+
 # Start Docker registry using Docker Compose
 echo "Starting Docker registry using Docker Compose..."
-docker-compose up -d
+docker compose up -d
 
 if [ $? -eq 0 ]; then
   echo "Docker registry setup complete. Accessible at https://$DOMAIN"
