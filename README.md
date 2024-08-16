@@ -63,3 +63,15 @@ If you want to clone the entire repository and use the scripts:
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/github-workflow/node-postgres/Dockerfile
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/github-workflow/node-postgres/cicd.yml
    ```
+3. **Setup docker registery**
+
+   - Run the initial setup script:
+   ```sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-docker-registery.sh
+   chmod +x setup-docker-registery.sh
+   ./setup-docker-registery.sh --domain <DOMAIN> --port <PORT> --email <EMAIL>  --username <USERNAME> --password <PASSWORD>
+   ```
+   - **Important:**
+   - If script stop before sucess message between running the above script, log out and log back in to apply Docker group changes.
+   - If fails then try to run again
+
