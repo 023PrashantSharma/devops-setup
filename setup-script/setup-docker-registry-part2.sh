@@ -39,7 +39,11 @@ cd ~/docker-registry/auth
 sudo htpasswd -cb auth/registry.password "$USERNAME" "$PASSWORD"
 sudo chown ubuntu:ubuntu auth/registry.password
 
-# Set up Nginx
+# Update Nginx configuration file
+echo "Updating Nginx configuration file..."
+sudo sed -i '/http {/a \    client_max_body_size 16384m;' /etc/nginx/nginx.conf
+
+# Set up Nginx site
 echo "Configuring Nginx..."
 sudo tee /etc/nginx/sites-available/$DOMAIN > /dev/null <<EOF
 server {
