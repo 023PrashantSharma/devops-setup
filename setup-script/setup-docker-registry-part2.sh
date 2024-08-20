@@ -4,7 +4,12 @@
 set -e
 
 # Load parameters from part 1
-source /tmp/setup-docker-registry-params.sh
+if [ -f /tmp/setup-docker-registry-params.sh ]; then
+  source /tmp/setup-docker-registry-params.sh
+else
+  echo "Error: Parameters file not found. Ensure the first script ran successfully." >&2
+  exit 1
+fi
 
 # Set up Docker registry
 echo "Setting up Docker registry..."
@@ -35,9 +40,10 @@ EOF
 
 # Create htpasswd file for authentication
 echo "Creating htpasswd file for authentication..."
+mkdir -p ~/docker-registry/auth
 cd ~/docker-registry/auth
-sudo htpasswd -cb auth/registry.password "$USERNAME" "$PASSWORD"
-sudo chown ubuntu:ubuntu auth/registry.password
+sudo htpasswd -cb registry.password "$USERNAME" "$PASSWORD"
+sudo chown ubuntu:ubuntu registry.password
 
 # Update Nginx configuration file
 echo "Updating Nginx configuration file..."
@@ -89,3 +95,8 @@ else
   echo "Error: Docker registry setup failed." >&2
   exit 1
 fi
+
+# Clean up
+echo "Cleaning up temporary files..."
+rm -f /tmp/setup-docker-registry-params.sh
+echo "Temporary files removed."

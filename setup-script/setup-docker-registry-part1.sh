@@ -28,6 +28,17 @@ if [ -z "$DOMAIN" ] || [ -z "$PORT" ] || [ -z "$EMAIL" ] || [ -z "$USERNAME" ] |
   usage
 fi
 
+# Save parameters for the second part of the script immediately
+echo "Saving parameters for part 2..."
+cat <<EOF >/tmp/setup-docker-registry-params.sh
+DOMAIN="$DOMAIN"
+PORT="$PORT"
+EMAIL="$EMAIL"
+USERNAME="$USERNAME"
+PASSWORD="$PASSWORD"
+EOF
+
+# Continue with package updates and Docker installation
 echo "Updating package lists..."
 sudo apt-get update
 
@@ -61,27 +72,13 @@ if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
   newgrp docker
   echo "Docker group permission applied. Please log out and log back in to apply the changes."
   echo "After re-login, run the following command to continue the setup:"
-  echo "./setup-docker-registry-part2.sh --domain $DOMAIN --port $PORT --email $EMAIL --username $USERNAME --password $PASSWORD"
+  echo "./setup-docker-registry-part2.sh"
   exit 0
 else
   echo "User already has Docker group permissions."
 fi
 
-# Save parameters for the second part of the script
-echo "Saving parameters for part 2..."
-cat <<EOF >/tmp/setup-docker-registry-params.sh
-DOMAIN="$DOMAIN"
-PORT="$PORT"
-EMAIL="$EMAIL"
-USERNAME="$USERNAME"
-PASSWORD="$PASSWORD"
-EOF
-
 # Next steps instructions
 echo "Please log out and log back in to apply Docker group changes."
 echo "After re-login, run the following command to continue the setup:"
 echo "./setup-docker-registry-part2.sh --domain $DOMAIN --port $PORT --email $EMAIL --username $USERNAME --password $PASSWORD"
-
-exit 0
-
-bash setup-docker-registry-part2.sh --domain $DOMAIN --port $PORT --username $USERNAME --password $PASSWORD --email $EMAIL
