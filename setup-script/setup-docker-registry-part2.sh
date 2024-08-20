@@ -42,8 +42,9 @@ EOF
 echo "Creating htpasswd file for authentication..."
 mkdir -p ~/docker-registry/auth
 cd ~/docker-registry/auth
-sudo htpasswd -cb registry.password "$USERNAME" "$PASSWORD"
-sudo chown ubuntu:ubuntu registry.password
+sudo htpasswd -B -c ~/docker-registry/auth/registry.password "$USERNAME" "$PASSWORD"
+sudo chown ubuntu:ubuntu ~/docker-registry/auth/registry.password
+sudo chmod 644 ~/docker-registry/auth/registry.password
 
 # Update Nginx configuration file
 echo "Updating Nginx configuration file..."
