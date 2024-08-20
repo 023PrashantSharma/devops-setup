@@ -27,7 +27,7 @@ services:
   registry:
     image: registry:2
     ports:
-    - "$PORT:$PORT"
+    - "$PORT:5000"
     environment:
        REGISTRY_AUTH: htpasswd
        REGISTRY_AUTH_HTPASSWD_REALM: Registry
