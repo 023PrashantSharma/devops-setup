@@ -42,7 +42,8 @@ EOF
 echo "Creating htpasswd file for authentication..."
 mkdir -p ~/docker-registry/auth
 cd ~/docker-registry/auth
-sudo htpasswd -B -c ~/docker-registry/auth/registry.password "$USERNAME" "$PASSWORD"
+echo "$PASSWORD" | sudo htpasswd -B -c ~/docker-registry/auth/registry.password "$USERNAME"
+
 sudo chown ubuntu:ubuntu ~/docker-registry/auth/registry.password
 sudo chmod 644 ~/docker-registry/auth/registry.password
 
