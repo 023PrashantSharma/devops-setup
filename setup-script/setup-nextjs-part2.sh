@@ -28,59 +28,6 @@ if [ -z "$DOMAIN" ] || [ -z "$CONTAINER_NAME" ] || [ -z "$IMAGE_NAME" ] || [ -z 
   usage
 fi
 
-echo "Updating package lists..."
-sudo apt-get update
-
-# Install Docker
-if ! [ -x "$(command -v docker)" ]; then
-  echo 'Installing Docker...'
-  sudo apt-get install -y docker.io
-  sudo systemctl start docker
-  sudo systemctl enable docker
-  echo 'Docker installed successfully.'
-else
-  echo 'Docker is already installed.'
-fi
-
-# Install Docker Compose
-if ! [ -x "$(command -v docker-compose)" ]; then
-  echo 'Installing Docker Compose...'
-  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
-  echo 'Docker Compose installed successfully.'
-else
-  echo 'Docker Compose is already installed.'
-fi
-
-# Install Nginx
-if ! [ -x "$(command -v nginx)" ]; then
-  echo 'Installing Nginx...'
-  sudo apt-get install -y nginx
-  sudo systemctl start nginx
-  sudo systemctl enable nginx
-  echo 'Nginx installed successfully.'
-else
-  echo 'Nginx is already installed.'
-fi
-
-# Install Certbot for SSL
-if ! [ -x "$(command -v certbot)" ]; then
-  echo 'Installing Certbot...'
-  sudo apt-get install -y certbot python3-certbot-nginx
-  echo 'Certbot installed successfully.'
-else
-  echo 'Certbot is already installed.'
-fi
-
-# Apply Docker group permissions
-if ! groups $USER | grep &>/dev/null "\bdocker\b"; then
-  sudo usermod -aG docker $USER
-  newgrp docker #if you do not want to reload terminal
-  echo "Docker group permission applied. Please re-login for the changes to take effect."
-else
-  echo "User already has Docker group permissions."
-fi
-
 # Test Docker permissions
 if docker run hello-world &>/dev/null; then
   echo "Docker permission set successfully."
