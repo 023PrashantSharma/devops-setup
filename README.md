@@ -34,7 +34,7 @@ If you want to clone the entire repository and use the scripts:
    ```sh
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-nextjs-part1.sh
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-nextjs-part2.sh
-   chmod +x setup-node-pg-part1.sh setup-node-pg-part2.sh
+   chmod +x setup-nextjs-part1.sh setup-nextjs-part2.sh
    ./setup-nextjs-part1.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --email <EMAIL>
    ```
    - **Important:** If script stop before sucess message between running the above script, log out and log back in to apply Docker group changes.
