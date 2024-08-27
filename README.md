@@ -92,13 +92,13 @@ If you want to clone the entire repository and use the scripts:
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-php-mysql-part1.sh
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-php-mysql-part1.sh
    chmod +x setup-docker-registry-part1.sh setup-docker-registry-part2.sh
-   ./setup-php-mysql-part1.sh --domain <DOMAIN> --port <PORT> --email <EMAIL>  --username <USERNAME> --password <PASSWORD>
+   ./setup-php-mysql-part1.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
    ```
    - **Important:** If script stop before sucess message between running the above script, log out and log back in to apply Docker group changes.
    
    - Run the follow-up script after logging back in:
    ```sh
-   ./setup-php-mysql-part2.sh --domain <DOMAIN> --port <PORT> --email <EMAIL>  --username <USERNAME> --password <PASSWORD>
+   ./setup-php-mysql-part2.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
    ```
 
 
