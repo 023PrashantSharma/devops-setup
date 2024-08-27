@@ -90,7 +90,7 @@ If you want to clone the entire repository and use the scripts:
    - Run the initial setup script:
    ```sh
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-php-mysql-part1.sh
-   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-php-mysql-part1.sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-php-mysql-part2.sh
    chmod +x setup-php-mysql-part1.sh setup-php-mysql-part2.sh
    ./setup-php-mysql-part1.sh --domain <DOMAIN> --container-name <CONTAINER_NAME> --image-name <IMAGE_NAME> --port <PORT> --db-port <DB_PORT> --email <EMAIL>
    ```
