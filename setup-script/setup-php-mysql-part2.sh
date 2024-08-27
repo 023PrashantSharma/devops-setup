@@ -182,58 +182,6 @@ else
   exit 1
 fi
 
-# Prepare Docker environment variables
-cat <<EOF > .env
-MYSQL_ROOT_PASSWORD=my-secret-pw
-MYSQL_DATABASE=mydatabase
-MYSQL_USER=myuser
-MYSQL_PASSWORD=mypassword
-EOF
-
-# Docker Compose setup
-cat <<EOF > docker-compose.yml
-version: '3.8'
-services:
-  php:
-    image: php:7.4-apache
-    container_name: $CONTAINER_NAME
-    ports:
-      - "$PORT:80"
-    volumes:
-      - ./src:/var/www/html
-    environment:
-      - MYSQL_HOST=db
-      - MYSQL_DATABASE=\${MYSQL_DATABASE}
-      - MYSQL_USER=\${MYSQL_USER}
-      - MYSQL_PASSWORD=\${MYSQL_PASSWORD}
-
-  db:
-    image: mysql:5.7
-    ports:
-      - "$DB_PORT:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=\${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=\${MYSQL_DATABASE}
-      - MYSQL_USER=\${MYSQL_USER}
-      - MYSQL_PASSWORD=\${MYSQL_PASSWORD}
-    volumes:
-      - db_data:/var/lib/mysql
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - "8080:80"
-    environment:
-      - PMA_HOST=db
-      - MYSQL_ROOT_PASSWORD=\${MYSQL_ROOT_PASSWORD}
-
-volumes:
-  db_data:
-EOF
-
-# Build and start Docker containers
-docker-compose up -d
-
 if [ $? -eq 0 ]; then
   echo "Docker containers for $IMAGE_NAME built and started successfully."
 else
