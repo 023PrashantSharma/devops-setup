@@ -70,7 +70,7 @@ If you want to clone the entire repository and use the scripts:
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/github-workflow/node-postgres/Dockerfile
    curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/github-workflow/node-postgres/cicd.yml
    ```
-3. **Setup docker registery**
+4. **Setup docker registery**
 
    - Run the initial setup script:
    ```sh
@@ -85,4 +85,20 @@ If you want to clone the entire repository and use the scripts:
    ```sh
    ./setup-docker-registry-part2.sh --domain <DOMAIN> --port <PORT> --email <EMAIL>  --username <USERNAME> --password <PASSWORD>
    ```
+4. **Setup PHP MySQL**
+
+   - Run the initial setup script:
+   ```sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-php-mysql-part1.sh
+   curl -O https://raw.githubusercontent.com/023PrashantSharma/devops-setup/main/setup-script/setup-php-mysql-part1.sh
+   chmod +x setup-docker-registry-part1.sh setup-docker-registry-part2.sh
+   ./setup-php-mysql-part1.sh --domain <DOMAIN> --port <PORT> --email <EMAIL>  --username <USERNAME> --password <PASSWORD>
+   ```
+   - **Important:** If script stop before sucess message between running the above script, log out and log back in to apply Docker group changes.
+   
+   - Run the follow-up script after logging back in:
+   ```sh
+   ./setup-php-mysql-part2.sh --domain <DOMAIN> --port <PORT> --email <EMAIL>  --username <USERNAME> --password <PASSWORD>
+   ```
+
 
